@@ -1,0 +1,1 @@
+chat gpt, estoy realizando un simulador de crédito y quiero agregar a mi proyecto una imagen empresarial, quisiera usar los colores y la imagen que usa el banco BBVA, te voy a compartir  mi css para adecuarlo y también que sea responsive 

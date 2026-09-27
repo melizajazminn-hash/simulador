@@ -5,46 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Crédito</title>
     <link rel="stylesheet" href="simulador.css">
-    
-    <!-- Asegúrate de tener estas dos líneas en este orden exacto -->
-    <script src="funciones.js"></script> 
-    <script src="simulador.js"></script> 
+    <!-- SE DETUVO LA CARGA DESDE AQUÍ ARRIBA -->
 </head>
 <body>
 
-    <div class="container">
-        <h1>Simulador de Crédito</h1>
+  <div class="card-simulador">
+ </div>
 
-        <h2>Datos financieros</h2>
-        <label for="txtIngresos">Ingresos:</label>
-        <input type="text" id="txtIngresos">
+  <script src="funciones.js"></script> 
+  <script src="simulador.js"></script> 
+</body>
+</html>
+  <div class="card-simulador">
+    
+    <!-- Cabecera con Logo y Título -->
+    <header class="cabecera-simulador">
+      <img src="bbva" alt="BBVA Logo" class="logo-bbva-flotante">
+      <h1 class="titulo-centrado">Simulador de Crédito</h1>
+    </header>
+ <!-- 3. SECCIÓN: DATOS FINANCIEROS -->
+    <section>
+      <h2 class="subtitulo-seccion">Datos financieros</h2>
+      
+      <label for="ingresos">Ingresos:</label>
+      <input type="number" id="ingresos">
+      
+      <label for="egresos">Egresos:</label>
+      <input type="number" id="egresos">
+      
+      <p class="resultado-linea">Disponible: <span id="res-disponible">$0.00</span></p>
+      <p class="resultado-linea">Capacidad de pago mensual: <span id="res-capacidad">$0.00</span></p>
+    </section>
 
-        <label for="txtEgresos">Egresos:</label>
-        <input type="text" id="txtEgresos">
+    <!-- SECCIÓN: SOLICITUD DE CRÉDITO -->
+    <section>
+      <h2 class="subtitulo-seccion">Solicitud de crédito</h2>
+      
+      <label for="monto">Monto:</label>
+      <input type="number" id="monto">
+      
+      <label for="plazo">Plazo en años:</label>
+      <input type="number" id="plazo">
+      
+      <label for="tasa">Tasa de interés:</label>
+      <input type="number" id="tasa" step="0.1">
+      
+      <p class="resultado-linea">Interés a pagar: <span id="res-interes">$0.00</span></p>
+      <p class="resultado-linea">Total préstamo: <span id="res-total">$0.00</span></p>
+      <p class="resultado-linea">Cuota mensual: <span id="res-cuota">$0.00</span></p>
+      
+      <p class="resultado-linea">Estado de crédito: <span id="res-estado" class="estado-analizando">ANALIZANDO...</span></p>
+    </section>
 
-        <p>Disponible: <span id="lblDisponibleValor"></span></p>
-        <p>Capacidad de pago mensual: <span id="lblCapacidadValor"></span></p>
-
-        <h2>Solicitud de crédito</h2>
-        <label for="txtMonto">Monto:</label>
-        <input type="text" id="txtMonto">
-
-        <label for="txtPlazo">Plazo en años:</label>
-        <input type="text" id="txtPlazo">
-
-        <label for="txtTasaInteres">Tasa de interés:</label>
-        <input type="text" id="txtTasaInteres">
-
-        <p>Interés a pagar: <span id="lblInteresValor"></span></p>
-        <p>Total préstamo: <span id="lblTotalValor"></span></p>
-        <p>Cuota mensual: <span id="lblCuotaValor"></span></p>
-        <p>Estado de crédito: <span id="lblEstadoCredito">ANALIZANDO...</span></p>
-
-        <div class="buttons">
-            <button id="btnCalcularCredito">Calcular Crédito</button>
-            <button id="btnReiniciar">Reiniciar</button>
-        </div>
+    <!-- Botones de Acción -->
+    <div class="botones-contenedor">
+      <button type="button" id="btn-calcular" class="btn-calcular">Calcular Crédito</button>
+      <button type="button" id="btn-reiniciar" class="btn-reiniciar">Reiniciar</button>
     </div>
+
+  </div>
 
 </body>
 </html>
+

@@ -1,55 +1,70 @@
-window.onload = function() {
-    let btnCalcular = document.getElementById("btnCalcularCredito");
-    let btnReiniciar = document.getElementById("btnReiniciar");
+// Esperar a que el navegador termine de cargar toda la estructura del HTML
+document.addEventListener("DOMContentLoaded", () => {
+    
+    const btnCalcular = document.getElementById("btn-calcular");
+    const btnReiniciar = document.getElementById("btn-reiniciar");
 
-    btnCalcular.onclick = calcular;
-    btnReiniciar.onclick = reiniciarSimulador;
-};
+    if (!btnCalcular || !btnReiniciar) return;
 
+    // ==========================================================================
+    // ACCIÓN DEL BOTÓN: CALCULAR CRÉDITO
+    // ==========================================================================
+    btnCalcular.addEventListener("click", () => {
+        // 1. Recuperar valores numéricos desde el HTML usando tus funciones de lectura
+        const ingresos = recuperarFloat("ingresos");
+        const egresos  = recuperarFloat("egresos");
+        const monto    = recuperarFloat("monto");
+        const plazo    = recuperarEntero("plazo"); // El plazo en años suele manejarse como entero
+        const tasa     = recuperarFloat("tasa");
 
-function calcular(){
-    let ingresos = recuperarFloat("txtIngresos");
-    let egresos = recuperarFloat("txtEgresos");
-    let disponible = calcularDisponible(ingresos, egresos);
+        // 2. Realizar los cálculos financieros encadenando tus fórmulas de funciones.js
+        const disponible    = calcularDisponible(ingresos, egresos);
+        const capacidadPago = calcularCapacidadPago(disponible);
+        const interes       = calcularInteresSimple(monto, tasa, plazo);
+        const totalPagar    = calcularTotalPagar(monto, interes);
+        const cuotaMensual  = calcularCuotaMensual(totalPagar, plazo);
+        
+        // Evaluar la respuesta booleana (true/false) de tu función aprobarCredito
+        const esAprobado    = aprobarCredito(capacidadPago, cuotaMensual);
+        const estadoTexto   = esAprobado ? "CREDITO APROBADO" : "CREDITO RECHAZADO";
 
-    mostrarEnSpan("lblDisponibleValor", disponible.toFixed(2));
+        // 3. Inyectar y mostrar los resultados formateados en la interfaz (con dos decimales)
+        mostrarEnSpan("res-disponible", `$${disponible.toFixed(2)}`);
+        mostrarEnSpan("res-capacidad",  `$${capacidadPago.toFixed(2)}`);
+        mostrarEnSpan("res-interes",    `$${interes.toFixed(2)}`);
+        mostrarEnSpan("res-total",      `$${totalPagar.toFixed(2)}`);
+        
+        // Control de seguridad para la cuota por si el plazo ingresado es 0
+        if (plazo > 0) {
+            mostrarEnSpan("res-cuota", `$${cuotaMensual.toFixed(2)}`);
+        } else {
+            mostrarEnSpan("res-cuota", "\$0.00");
+        }
 
-    let capacidad = calcularCapacidadPago(disponible);
+        // 4. Mostrar el veredicto final en el elemento del estado del crédito
+        // Nota: Asegúrate de que el id en funciones.js busque "res-estado" para aplicar la lógica de colores
+        mostrarEnSpan("res-estado", estadoTexto);
+    });
 
-    mostrarEnSpan("lblCapacidadValor", capacidad.toFixed(2));
+    // ==========================================================================
+    // ACCIÓN DEL BOTÓN: REINICIAR (LIMPIAR INTERFAZ)
+    // ==========================================================================
+    btnReiniciar.addEventListener("click", () => {
+        // Limpiar completamente el contenido escrito en las cajas de texto
+        document.getElementById("ingresos").value = "";
+        document.getElementById("egresos").value = "";
+        document.getElementById("monto").value = "";
+        document.getElementById("plazo").value = "";
+        document.getElementById("tasa").value = "";
 
-    let monto = recuperarEntero("txtMonto");
-    let plazo = recuperarEntero("txtPlazo");
-    let tasa = recuperarEntero("txtTasaInteres");
+        // Restablecer los valores visuales base
+        mostrarEnSpan("res-disponible", "\$0.00");
+        mostrarEnSpan("res-capacidad",  "\$0.00");
+        mostrarEnSpan("res-interes",    "\$0.00");
+        mostrarEnSpan("res-total",      "\$0.00");
+        mostrarEnSpan("res-cuota",      "\$0.00");
 
-    let interes = calcularInteresSimple(monto, tasa, plazo);
-    mostrarEnSpan("lblInteresValor", interes.toFixed(2));
-
-    let totalPrestamo = calcularTotalPagar(monto, interes);
-    mostrarEnSpan("lblTotalValor", totalPrestamo);
-
-    let cuotaMensual = calcularCuotaMensual(totalPrestamo, plazo);
-    mostrarEnSpan("lblCuotaValor", cuotaMensual.toFixed(2));
-
-    let estaAprobado = aprobarCredito(capacidad, cuotaMensual);
-    if (estaAprobado === true) {
-        mostrarEnSpan("lblEstadoCredito", "CREDITO APROBADO");
-    } else {
-        mostrarEnSpan("lblEstadoCredito", "CREDITO RECHAZADO");
-    }
-}
-
-function reiniciarSimulador() {
-    document.getElementById("txtIngresos").value = "";
-    document.getElementById("txtEgresos").value = "";
-    document.getElementById("txtMonto").value = "";
-    document.getElementById("txtPlazo").value = "";
-    document.getElementById("txtTasaInteres").value = "";
-
-    mostrarEnSpan("lblDisponibleValor", "");
-    mostrarEnSpan("lblCapacidadValor", "");
-    mostrarEnSpan("lblInteresValor", "");
-    mostrarEnSpan("lblTotalValor", "");
-    mostrarEnSpan("lblCuotaValor", "");
-    mostrarEnSpan("lblEstadoCredito", "PROCESANDO");
-}
+        // Regresar el estado original neutral
+        mostrarEnSpan("res-estado", "ANALIZANDO...");
+    });
+});

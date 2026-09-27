@@ -1,70 +1,155 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    margin: 0;
-    padding: 0;
+/* ==========================================================================
+   0. RESET Y ESTILOS BASE DE LA PÁGINA
+   ========================================================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f4f4f6;   /* Fondo gris claro sutil detrás de la tarjeta */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.container {
-    width: 400px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+/* ==========================================================================
+   1. CONTENEDOR PRINCIPAL (TARJETA CENTRADA CON BORDE AZUL SUPERIOR)
+   ========================================================================== */
+.card-simulador {
+  max-width: 440px;            /* Ancho controlado idéntico a la imagen */
+  width: 90%;                  /* Se adapta perfectamente a pantallas móviles */
+  margin: 40px auto;           /* Centra la tarjeta horizontalmente */
+  background-color: #ffffff;   /* Fondo blanco limpio */
+  padding: 30px;               /* Espacio interno uniforme */
+  border-radius: 8px;          /* Bordes suavemente redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); /* Sombra suave para dar volumen */
+  box-sizing: border-box;
+  position: relative;
+
+  /* 💙 LA FRANJA AZUL MARINO SUPERIOR ORIGINAL 💙 */
+  border-top: 8px solid #072146; 
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+/* ==========================================================================
+   2. CABECERA (LOGO ALINEADO Y TÍTULO CENTRADO CON FLEXBOX)
+   ========================================================================== */
+.cabecera-simulador {
+  display: flex;
+  align-items: center;         /* Centra verticalmente el logo y el título */
+  justify-content: space-between; /* Empuja el logo a la izquierda y el título al centro */
+  gap: 28px;                   /* Evita colisiones en pantallas pequeñas o móviles */
+  margin-top: 10px;            /* Espacio extra debajo de la franja azul */
+  margin-bottom: 30px;         /* Separación con la sección inferior */
+  width: 100%;
 }
 
-h2 {
-    margin-top: 20px;
-    font-size: 18px;
+.logo-bbva-flotante {
+  height: 30px;                /* Tamaño discreto y elegante */
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;              /* Impide que el logo se aplaste o deforme */
 }
 
-label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
+.titulo-centrado {
+  margin: 0;
+  font-size: 23px;             /* Escala grande e importante original */
+  color: #072146;              /* Azul marino corporativo */
+  font-weight: bold;
+  flex-grow: 1;                /* Distribuye el espacio para centrar el texto */
+  text-align: center;          /* Mantiene el título perfectamente centrado */
 }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+/* ==========================================================================
+   3. TEXTOS, LABELS E INPUTS VERTICALES (UN ELEMENTO POR LÍNEA)
+   ========================================================================== */
+/* Títulos de las secciones (Datos financieros / Solicitud de crédito) */
+.subtitulo-seccion {
+  font-size: 16px;
+  color: #072146;
+  font-weight: bold;
+  margin: 25px 0 15px 0;
+  border-bottom: 1px solid #f0f0f4; /* Línea divisoria sutil inferior */
+  padding-bottom: 5px;
+}
+.subtitulo-seccion:first-of-type {
+  margin-top: 0;               /* Quita margen superior al primer subtítulo */
 }
 
-p {
-    margin-top: 10px;
+/* Etiquetas de los campos */
+.card-simulador label {
+  display: block;              /* Obliga al label a ocupar su propia línea */
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: normal;         /* Estilo limpio para los labels */
+  color: #333333;
+  font-size: 14px;
 }
 
-span {
-    font-weight: bold;
-    color: #2c3e50;
+/* Cajas de texto (Inputs) */
+.card-simulador input {
+  display: block;              /* Obliga al input a ocupar su propia línea */
+  width: 100%;                 /* Llena el 100% del ancho de la tarjeta */
+  box-sizing: border-box;      /* Evita que el padding deforme el ancho total */
+  padding: 10px 12px;
+  border: 1px solid #dcdcdc;   /* Borde gris claro como en la imagen */
+  border-radius: 4px;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: #333333;
 }
 
-.buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
+.card-simulador input:focus {
+  outline: none;
+  border-color: #072146;       /* Resalta en azul marino al escribir */
 }
 
-button {
-    width: 48%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3498db;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+/* Líneas de resultados finales */
+.resultado-linea {
+  font-size: 15px;
+  color: #333333;
+  margin-top: 14px;
+  margin-bottom: 14px;
 }
 
-button:hover {
-    background-color: #2980b9;
+.resultado-linea span {
+  font-weight: bold;
+  color: #072146;
+}
+/* ==========================================================================
+   4. BOTONES INFERIORES
+   ========================================================================== */
+.botones-contenedor {
+  display: flex;
+  gap: 15px;                   /* Separación exacta entre ambos botones */
+  margin-top: 25px;
+}
+
+.btn-calcular {
+  flex: 1;                     /* Ocupa la mitad del espacio disponible */
+  background-color: #072146;   /* Azul BBVA */
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-calcular:hover {
+  background-color: #004481;   /* Variante de azul más claro al pasar el cursor */
+}
+
+.btn-reiniciar {
+  flex: 1;                     /* Ocupa la mitad del espacio disponible */
+  background-color: #74818c;   /* Gris exacto de la interfaz */
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-reiniciar:hover {
+  background-color: #5a6670;   /* Variante de gris más oscuro al pasar el cursor */
 }
