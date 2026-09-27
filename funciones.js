@@ -1,74 +1,237 @@
 function calcularDisponible(ingresos, egresos) {
-    let disponible = ingresos - egresos;
-    return disponible < 0 ? 0 : disponible; // Si es negativo, devuelve 0
+let disponible = ingresos - egresos;
+
+
+if (disponible < 0) {
+    disponible = 0;
 }
 
-function calcularCapacidadPago(montoDisponible){
-    // Calcula el 50% del monto disponible
-    let capacidad = montoDisponible * 0.50;
-    return capacidad;
+return disponible;
+
+
 }
 
-function calcularInteresSimple(monto, tasa, plazoAnios){
-    let interes = plazoAnios * monto * (tasa / 100);
-    return interes;
+function calcularCapacidadPago(montoDisponible) {
+let capacidad = montoDisponible * 0.50;
+
+
+return capacidad;
+
+
 }
 
-function calcularTotalPagar(monto, interes){
-    // Suma el monto, el interés y una comisión fija de 100
-    let total = monto + interes + 100;
-    return total;
+function calcularInteresSimple(monto, tasa, plazoAnios) {
+let interes = monto * (tasa / 100) * plazoAnios;
+
+
+return interes;
+
+
+}
+
+function calcularTotalPagar(monto, interes) {
+let comision = 100;
+
+
+let total = monto + interes + comision;
+
+return total;
+
+
 }
 
 function calcularCuotaMensual(totalPrestamo, plazoAnios) {
-    let totalMeses = plazoAnios * 12;
-    if (totalMeses === 0) return 0; // Evita la división por cero si el plazo es 0
-    let cuota = totalPrestamo / totalMeses;
-    return cuota;
+let totalMeses = plazoAnios * 12;
+
+
+if (totalMeses === 0) {
+    return 0;
+}
+
+let cuota = totalPrestamo / totalMeses;
+
+return cuota;
+
+
+}
+
+function calcularSaldoFinal(disponible, cuotaMensual) {
+return disponible - cuotaMensual;
+}
+
+function calcularPorcentajeCuota(ingresos, cuotaMensual) {
+
+
+if (ingresos <= 0) {
+    return 0;
+}
+
+return (cuotaMensual / ingresos) * 100;
+
+
+}
+
+function calcularCostoCredito(monto, totalPagar) {
+
+
+if (monto <= 0) {
+    return 0;
+}
+
+return ((totalPagar - monto) / monto) * 100;
+
+
 }
 
 function aprobarCredito(capacidadPago, cuotaMensual) {
-    // Retorna true si la capacidad cubre la cuota, false si no
-    return capacidadPago > cuotaMensual; 
+
+
+if (cuotaMensual <= capacidadPago) {
+    return true;
 }
 
-/* ==========================================================================
-   FUNCIONES DE LECTURA E INYECCIÓN DE LA INTERFAZ (DOM)
-   ========================================================================== */
+return false;
 
-function recuperarTexto(idComponente){
-    let componente = document.getElementById(idComponente);
-    return componente ? componente.value : "";
+
 }
 
-function recuperarFloat(idComponente){
-    let valorTexto = recuperarTexto(idComponente);
-    let valorFloat = parseFloat(valorTexto);
-    return isNaN(valorFloat) ? 0 : valorFloat; // Si no es un número, devuelve 0
+function analizarCredito(capacidadPago, cuotaMensual, saldoFinal) {
+
+
+if (cuotaMensual <= 0) {
+    return "INGRESA UN PLAZO VALIDO";
 }
 
-function recuperarEntero(idComponente){
-    let valorTexto = recuperarTexto(idComponente);
-    let valorEntero = parseInt(valorTexto);
-    return isNaN(valorEntero) ? 0 : valorEntero; // Si no es un número, devuelve 0
+if (saldoFinal < 0) {
+    return "CAPACIDAD DE PAGO INSUFICIENTE";
 }
 
-// SE CORRIGIÓ: Una sola función unificada con los IDs reales de tu HTML
-function mostrarEnSpan(idComponente, valor){
-    let componente = document.getElementById(idComponente);
-    if (!componente) return;
+if (cuotaMensual > capacidadPago) {
+    return "CAPACIDAD DE PAGO AJUSTADA";
+}
 
-    componente.textContent = valor;
+return "CAPACIDAD DE PAGO ADECUADA";
 
-    // Lógica dinámica de colores usando el ID real del HTML ("res-estado")
-    if (idComponente === "res-estado") {
-        if (valor === "CREDITO APROBADO") {
-            componente.style.color = "#2d8540"; // Verde éxito de BBVA
-        } else if (valor === "CREDITO RECHAZADO") {
-            componente.style.color = "#d8232a"; // Rojo alerta de BBVA
-        } else {
-            componente.style.color = "#072146"; // Azul oscuro (ANALIZANDO...)
-        }
+
+}
+
+function generarRecomendacion(
+ingresos,
+cuotaMensual,
+saldoFinal,
+porcentajeCuota,
+costoCredito
+) {
+
+
+if (ingresos <= 0) {
+    return "Ingresa tus ingresos mensuales para realizar el analisis.";
+}
+
+if (cuotaMensual <= 0) {
+    return "Ingresa un plazo valido para calcular la cuota.";
+}
+
+if (saldoFinal < 0) {
+    return "La cuota supera el dinero disponible despues de tus egresos.";
+}
+
+if (porcentajeCuota > 30) {
+    return "La cuota representa una parte importante de tus ingresos. Revisa el monto o el plazo.";
+}
+
+if (costoCredito > 50) {
+    return "El costo total del credito es elevado respecto al monto solicitado.";
+}
+
+return "La cuota puede ser cubierta con el dinero disponible. Revisa tambien el costo total y el plazo.";
+
+
+}
+
+/* FUNCIONES PARA LEER LOS INPUTS */
+
+function recuperarTexto(idComponente) {
+
+
+let componente = document.getElementById(idComponente);
+
+if (componente) {
+    return componente.value;
+}
+
+return "";
+
+
+}
+
+function recuperarFloat(idComponente) {
+
+
+let valorTexto = recuperarTexto(idComponente);
+
+let valorFloat = parseFloat(valorTexto);
+
+if (isNaN(valorFloat)) {
+    return 0;
+}
+
+return valorFloat;
+
+
+}
+
+function recuperarEntero(idComponente) {
+
+
+let valorTexto = recuperarTexto(idComponente);
+
+let valorEntero = parseInt(valorTexto);
+
+if (isNaN(valorEntero)) {
+    return 0;
+}
+
+return valorEntero;
+
+
+}
+
+/* MOSTRAR RESULTADOS */
+
+function mostrarEnSpan(idComponente, valor) {
+
+
+let componente = document.getElementById(idComponente);
+
+if (!componente) {
+    return;
+}
+
+componente.textContent = valor;
+
+
+if (idComponente === "res-estado") {
+
+    if (
+        valor === "CREDITO APROBADO" ||
+        valor === "CAPACIDAD DE PAGO ADECUADA"
+    ) {
+        componente.style.color = "#2d8540";
     }
+
+    else if (
+        valor === "CREDITO RECHAZADO" ||
+        valor === "CAPACIDAD DE PAGO INSUFICIENTE"
+    ) {
+        componente.style.color = "#d8232a";
+    }
+
+    else {
+        componente.style.color = "#072146";
+    }
+}
+
+
 }
 
